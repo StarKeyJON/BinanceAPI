@@ -1,19 +1,41 @@
 from flask import Flask, render_template, request, flash, redirect, jsonify
+from flask_cors import CORS
 import config, csv, datetime
 from binance.client import Client
 from binance.enums import *
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.secret_key = b'0xfjdksa_Dsajkilfjhkljfkdlas47893289fdl'
 
-client = Client(config.API_KEY, config.API_SECRET)
+client = Client(config.API_KEY, config.API_SECRET, tld="us")
 
 @app.route('/')
 def index():
-    return render_template('index.html')
 
-@app.route('/buy')
+    title = 'Coinview'
+
+    account = client.get_account()
+
+    balances = account['balances']
+    
+    exchange_info = client.get_exchange_info()
+
+    symbols = exchange_info['symbols']
+
+    return render_template('index.html', title=title, my_balances=balances, symbols=symbols)
+
+@app.route('/buy', methods=['POST'])
 def buy():
-    return 'buy'
+    print(request.form)
+    try:
+        order = client.create_order(symbol=request.form['symbol'],
+            side=SIDE_BUY,
+            type=ORDER_TYPE_MARKET,
+            quantity=request.form['quantity'])
+    except Exception as e:
+        flash(e.message, "error")
+    return redirect('/')
 
 @app.route('/sell')
 def sell():
@@ -25,4 +47,21 @@ def settings():
 
 @app.route('/history')
 def history():
-    candles = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE)
+    candlesticks = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_15MINUTE, "1 Mar, 2021", "24 May, 2021")
+
+    processed_candlesticks = []
+
+    for data in candlesticks:
+        candlestick = { 
+            "time": data[0] / 1000,
+            "open": data[1], 
+            "high": data[2],
+            "low": data[3],
+            "close": data[4]
+        }
+
+        processed_candlesticks.append(candlestick)
+
+    return jsonify(processed_candlesticks)
+
+

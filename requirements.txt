@@ -1,0 +1,6 @@
+python-binance
+TA-Lib
+numpy
+backtrader
+flask
+flask_cors
