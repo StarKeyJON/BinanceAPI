@@ -12,7 +12,7 @@ Websockets and Real-Time Lightweight Charts
 TA with Python and TALib
 	connect to websockets from Python, write candlestick data to csv
 		download historical data using REST API
-		install TALib, configure indicators
+		configure indicators
 
 Backtesting with Backtrader and TALib Indicators
 	test some indicators against a historical bakcing
