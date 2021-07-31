@@ -6,7 +6,7 @@ from binance.enums import *
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.secret_key = b'0xfjdksa_Dsajkilfjhkljfkdlas47893289fdl'
+app.secret_key = b''
 
 client = Client(config.API_KEY, config.API_SECRET, tld="us")
 
