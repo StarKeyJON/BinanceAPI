@@ -1,9 +1,9 @@
-**************************************************************************
+<h1>
 * 	Binance API - Websockets and Real-Time Lightweight Charts 	 *
 *                     	-------------                                    *
 * 	This is personal software built during my studies, 		 *
 * 		feel free to use as needed. 				 *
-**************************************************************************
+</h1>
 
 Websockets and Real-Time Lightweight Charts
 	wscat - connect to websocket from command line
